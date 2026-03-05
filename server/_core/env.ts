@@ -9,7 +9,15 @@ function requireEnv(key: string, value: string | undefined): string {
 
 function requireSecret(key: string, value: string | undefined, minLength = 32): string {
   const resolved = requireEnv(key, value);
-  if (resolved.length > 0 && resolved.length < minLength) {
+  if (resolved.length === 0) {
+    if (!isProduction) {
+      console.warn(
+        `[Security] Environment variable ${key} is not set. This is insecure and will fail in production.`,
+      );
+    }
+    return resolved;
+  }
+  if (resolved.length < minLength) {
     throw new Error(
       `Environment variable ${key} must be at least ${minLength} characters long for security`,
     );

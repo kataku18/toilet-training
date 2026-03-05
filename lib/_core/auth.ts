@@ -74,7 +74,8 @@ export async function getUserInfo(): Promise<User | null> {
     if (
       typeof parsed !== "object" ||
       parsed === null ||
-      typeof parsed.openId !== "string"
+      typeof parsed.openId !== "string" ||
+      typeof parsed.id !== "number"
     ) {
       console.error("[Auth] Stored user info has invalid structure, discarding");
       return null;
